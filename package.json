@@ -1,0 +1,23 @@
+{
+  "name": "car-maintenance-server",
+  "version": "1.0.0",
+  "description": "Car maintenance history server ",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/avmatys/car-maintenance-server.git"
+  },
+  "author": "Andrei Matys",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avmatys/car-maintenance-server/issues"
+  },
+  "homepage": "https://github.com/avmatys/car-maintenance-server#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
