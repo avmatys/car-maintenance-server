@@ -22,3 +22,7 @@ Thumbs.db
 # Build and coverage files
 dist/
 coverage/
+
+# User defined
+docs/
+requests/

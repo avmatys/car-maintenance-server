@@ -1,0 +1,27 @@
+import pg from 'pg'
+const { Pool } = pg
+import config from './config.js';
+
+const pool = new Pool({
+  host: config.db.host,
+  port: config.db.port,
+  database: config.db.database,
+  user: config.db.user,
+  password: config.db.password,
+  options: `-c search_path=${config.db.schema || 'public'}`,
+});
+
+const checkConnection = async () => {
+  try {
+    const res = await pool.query('SELECT NOW()');
+    console.log('Database connected at:', res.rows[0].now);
+  } catch (err) {
+    console.error('Database connection error:', err.message);
+    process.exit(1);
+  }
+};
+
+checkConnection();
+
+export const query = (text, params) => pool.query(text, params);
+export default pool;
