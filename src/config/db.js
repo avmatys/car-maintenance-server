@@ -24,4 +24,21 @@ const checkConnection = async () => {
 checkConnection();
 
 export const query = (text, params) => pool.query(text, params);
+
+export const beginTransaction = async () => {
+  const client = await pool.connect();
+  await client.query('BEGIN');
+  return client;
+};
+
+export const commitTransaction = async (client) => {
+  await client.query('COMMIT');
+  client.release();
+};
+
+export const rollbackTransaction = async (client) => {
+  await client.query('ROLLBACK');
+  client.release();
+};
+
 export default pool;
