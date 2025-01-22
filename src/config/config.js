@@ -18,7 +18,7 @@ const config = {
     schema : process.env.PG_SCHEMA,
   },
   telegram: {
-    token: process.env.TELEGRAM_BOT_TOKEN,
+    token: process.env.TELEGRAM_API_TOKEN,
   },
   jwt : {
     secret : process.env.JWT_SECRET,

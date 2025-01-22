@@ -21,7 +21,6 @@ export const getExpirationDate = (token) => {
   if (!token) {
       throw new Error('Token is required');
   }
-
   const decoded = jwt.decode(token);
   if (decoded && decoded.exp) {
     return new Date(decoded.exp * 1000); 
@@ -34,7 +33,6 @@ export const verifyJwtToken = (token) => {
   if (!token) {
     throw new Error('Token is required');
   }
-
   try {
     const decoded = jwt.verify(token, config.jwt.secret);
     return decoded;
@@ -43,6 +41,9 @@ export const verifyJwtToken = (token) => {
   }
 };
 
-export const getTokenFromAuth = (header) => {
-  return header.split(' ')[1];
-}
+export const verifyTgToken = (token) => {
+  if (!token) {
+    throw new Error('API token is required');
+  }
+  return token == config.telegram.token;
+};
