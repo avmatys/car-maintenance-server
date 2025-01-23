@@ -1,6 +1,6 @@
-import { check, validationResult } from "express-validator";
+import { check } from "express-validator";
 import { verifyJwtToken, verifyTgToken } from "../utils/cryptoUtils.js";
-import { formErrorResponse } from "../utils/errorUtils.js";
+import { formErrorResponse, checkValidationErrors} from "../utils/errorUtils.js";
 
 // Common
 export const verifyToken = (req, res, next) => {
@@ -28,14 +28,6 @@ export const verifyTelegramApiToken = (req, res, next) => {
   }
   next();
 };
-
-const checkValidationErrors = (req, res, next, code, errorMsg) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(code).json(formErrorResponse(errorMsg, errors.array()));
-  }
-  next();
-}
 
 // Web login
 const validateEmail = check("email")

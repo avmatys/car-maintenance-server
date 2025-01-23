@@ -74,4 +74,3 @@ export const getTgProfileByTelegramIdQuery = async (telegramId) => {
   );
   return result.rows[0];
 };
-
