@@ -69,7 +69,7 @@ export const createTgProfileQuery = async (telegramId) => {
 
 export const getTgProfileByTelegramIdQuery = async (telegramId) => {
   const result = await query(
-    "SELECT id, telegram_id, created_at FROM telegram_profiles WHERE telegram_id = $1",
+    "SELECT id, telegram_id, user_id, created_at FROM telegram_profiles WHERE telegram_id = $1",
     [telegramId]
   );
   return result.rows[0];

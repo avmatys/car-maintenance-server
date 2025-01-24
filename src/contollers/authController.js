@@ -48,7 +48,7 @@ export const loginWebUser = async (req, res) => {
     const token = generateToken({
       id: user.id,
       email: user.email,
-      user_id: user.user_id,
+      userId: user.user_id,
     });
     res.json({ token, expiration_date: getExpirationDate(token) });
   } catch (err) {
@@ -67,7 +67,7 @@ export const registerTgUser = async (req, res) => {
       return res
         .status(400)
         .json(
-          formErrorResponse("User with the same telegram_id is already exists")
+          formErrorResponse("User with the same telegram id is already exists")
         );
     }
     const userTgProfile = await createTgProfileQuery(telegramId);
@@ -88,8 +88,8 @@ export const loginTgUser = async (req, res) => {
     }
     const token = generateToken({
       id: user.id,
-      telegram_id: user.telegram_id,
-      user_id: user.user_id,
+      telegramId: user.telegram_id,
+      userId: user.user_id,
     });
     res.json({ token, expiration_date: getExpirationDate(token) });
   } catch (err) {
