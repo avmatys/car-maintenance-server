@@ -8,7 +8,7 @@ export const getAllUsersQuery = async () => {
 
 export const getUserByIdQuery = async (id) => {
   const result = await query(
-    "SELECT id, email, created_at FROM users WHERE id = $1",
+    "SELECT id, email, created_at FROM users WHERE id = $1 LIMIT 1",
     [id]
   );
   return result.rows[0];
@@ -37,12 +37,12 @@ export const createWebProfileQuery = async (email, hashedPassword) => {
     if (client)
       rollbackTransaction(client);
     throw err;
-  }  
+  }
 };
 
 export const getWebProfileByEmailQuery = async (email) => {
   const result = await query(
-    "SELECT id, email, password, user_id, created_at FROM web_profiles WHERE email = $1",
+    "SELECT id, email, password, user_id, created_at FROM web_profiles WHERE email = $1 LIMIT 1",
     [email]
   );
   return result.rows[0];
@@ -64,12 +64,12 @@ export const createTgProfileQuery = async (telegramId) => {
     if (client)
       rollbackTransaction(client);
     throw err;
-  }  
+  }
 };
 
 export const getTgProfileByTelegramIdQuery = async (telegramId) => {
   const result = await query(
-    "SELECT id, telegram_id, user_id, created_at FROM telegram_profiles WHERE telegram_id = $1",
+    "SELECT id, telegram_id, user_id, created_at FROM telegram_profiles WHERE telegram_id = $1 LIMIT 1",
     [telegramId]
   );
   return result.rows[0];

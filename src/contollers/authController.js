@@ -93,8 +93,6 @@ export const loginTgUser = async (req, res) => {
     });
     res.json({ token, expiration_date: getExpirationDate(token) });
   } catch (err) {
-    return res
-      .status(500)
-      .json(formErrorResponse("Error generating token.", err.message));
+    return res.status(500).json(formErrorResponse("Error generating token.", err.message));
   }
 };
