@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { getUserById } from '../contollers/userController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
-import { validateUserId } from '../middlewares/userValidator.js';
+import { validateUserId } from '../middlewares/userMiddleware.js';
 
 const router = Router();
 
