@@ -4,9 +4,12 @@ import { checkCarOwnerQuery, getCarByIdQuery } from "../queries/carQueries.js";
 
 export const validateUserIsCarOwner = async (req, res, next) => {
   const userId = req.user.userId;
-  const carId = req.params.carId;
+  const carId = req.params.carId || req.body.carId;
   try {
-    await checkCarOwnerQuery(userId, carId);
+    const accessData = await checkCarOwnerQuery(userId, carId);
+    if (!accessData){
+      return res.status(403).json(formErrorResponse("Unauthorized")); 
+    }
     next();
   } catch (err){
     return res.status(403).json(formErrorResponse("Unauthorized", err.message));
@@ -14,7 +17,7 @@ export const validateUserIsCarOwner = async (req, res, next) => {
 };
 
 export const validateCarExists = async (req, res, next) => {
-  const carId = req.params.carId;
+  const carId = req.params.carId || req.body.carId;
   try{
     const car = await getCarByIdQuery(carId);
     if (!car) {
@@ -32,7 +35,7 @@ export const validateCarId = [
     .isInt({min: 1})
     .withMessage("Car ID must be a valid integer")
     .toInt(),
-  (req, res, next) => checkValidationErrors(req, res, next, 400, "Car creation request is not valid"),
+  (req, res, next) => checkValidationErrors(req, res, next, 400, "Request is not valid"),
 ];
 
 export const validateCarCreation = [
