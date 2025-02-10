@@ -49,7 +49,7 @@ export const insertServiceQuery = async (carId, serviceDate, mileage, location, 
         if (client) rollbackTransaction(client);
         throw err;
     }
-}
+};
 
 export const selectServiceByCarId = async (carId) => {
     const selectQuery = `
@@ -73,4 +73,14 @@ export const selectServiceByCarId = async (carId) => {
     `;
     const result = await query(selectQuery, [carId]);
     return result.rows;
-}
+};
+
+export const getServiceById = async (serviceId, columns=['*']) => {
+    const selectQuery = `SELECT ${columns.join(',')} FROM services WHERE id = $1 LIMIT 1`;
+    const result = await query(selectQuery, [serviceId]);
+    return result.rows[0];
+};
+
+export const deleteServiceById = async (serviceId) => {
+    await query(`DELETE FROM services WHERE id = $1`, [serviceId]);
+};

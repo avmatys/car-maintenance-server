@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { createCar, deleteCar, updateCar, getUserCars } from '../contollers/carController.js';
-import { verifyToken } from '../middlewares/authMiddleware.js';
-import { validateCarCreation, validateCarId, validateUserIsCarOwner, validateCarExists} from '../middlewares/carMiddleware.js';
+import { verifyToken, validateUserIsCarOwner } from '../middlewares/authMiddleware.js';
+import { validateCarCreation, validateCarId, validateCarExists} from '../middlewares/carMiddleware.js';
 
 const router = Router();
 

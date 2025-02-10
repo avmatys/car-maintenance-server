@@ -1,6 +1,7 @@
 import { check } from "express-validator";
 import { verifyJwtToken, verifyTgToken } from "../utils/cryptoUtils.js";
 import { formErrorResponse, checkValidationErrors} from "../utils/errorUtils.js";
+import { checkCarOwnerQuery } from "../queries/carQueries.js";
 
 // Common
 export const verifyToken = (req, res, next) => {
@@ -27,6 +28,20 @@ export const verifyTelegramApiToken = (req, res, next) => {
     return res.status(403).json(formErrorResponse("Invalid or expired token"));
   }
   next();
+};
+
+export const validateUserIsCarOwner = async (req, res, next) => {
+  const userId = req.user.userId;
+  const carId = req.params.carId || req.body.carId;
+  try {
+    const accessData = await checkCarOwnerQuery(userId, carId);
+    if (!accessData){
+      return res.status(403).json(formErrorResponse("Unauthorized")); 
+    }
+    next();
+  } catch (err){
+    return res.status(403).json(formErrorResponse("Unauthorized", err.message));
+  }
 };
 
 // Web login

@@ -1,5 +1,6 @@
 import { check, body } from "express-validator";
 import { checkValidationErrors } from "../utils/errorUtils.js";
+import { getServiceById } from "../queries/serviceQueries.js";
 
 export const validateServiceCreation = [
   body("carId")
@@ -56,3 +57,25 @@ export const validateServiceCreation = [
   }),
   (req, res, next) => checkValidationErrors(req, res, next, 400,"Service creation request is not valid"),
 ];
+
+export const validateServiceId = [
+  check("serviceId")
+    .isInt({min: 1})
+    .withMessage("Service ID must be a valid integer")
+    .toInt(),
+  (req, res, next) => checkValidationErrors(req, res, next, 400, "Request is not valid"),
+];
+
+export const addCarIdFromService = async (req, res, next) => {
+  const serviceId = req.params.serviceId;
+  try{
+    const service = await getServiceById(serviceId, ['car_id']);
+    if (!service) {
+      return res.status(404).json(formErrorResponse("Service doesn't exist"));
+    }
+    req.params.carId = service.car_id;
+    next();
+  } catch (err) {
+    return res.status(500).json(formErrorResponse("Internal Server Error", err.message));
+  }
+};

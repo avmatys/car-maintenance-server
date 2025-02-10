@@ -1,5 +1,5 @@
 import { formErrorResponse } from '../utils/errorUtils.js';
-import { insertServiceQuery, selectServiceByCarId } from '../queries/serviceQueries.js';
+import { insertServiceQuery, selectServiceByCarId, deleteServiceById } from '../queries/serviceQueries.js';
 
 export const createService = async (req, res) => {
     const { carId, serviceDate, mileage, location, works = [], spareParts = [] } = req.body;
@@ -13,9 +13,9 @@ export const createService = async (req, res) => {
 
 export const getServiceById = async (req, res) => {
     res.status(501);
-}
+};  
 
-export const getCarSericeHistory = async (req, res) => {
+export const getCarSerices = async (req, res) => {
     const carId = req.params.carId;
     try {
         const plainData = await selectServiceByCarId(carId);
@@ -28,5 +28,15 @@ export const getCarSericeHistory = async (req, res) => {
         return res.status(200).json(serviceRecords);
     } catch(err) {
         return res.status(500).json(formErrorResponse('Error during service history read', err.message)); 
+    }
+};
+
+export const deleteService = async (req, res) => {
+    const serviceId = req.params.serviceId;
+    try {
+        await deleteServiceById(serviceId);
+        res.status(200).json({message: "Service was deleted"});
+    } catch(err) {
+        return res.status(500).json(formErrorResponse('Error during service deletion', err.message));
     }
 }

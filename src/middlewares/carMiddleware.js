@@ -1,20 +1,6 @@
 import { check, body } from "express-validator";
 import { checkValidationErrors, formErrorResponse } from "../utils/errorUtils.js";
-import { checkCarOwnerQuery, getCarByIdQuery } from "../queries/carQueries.js";
-
-export const validateUserIsCarOwner = async (req, res, next) => {
-  const userId = req.user.userId;
-  const carId = req.params.carId || req.body.carId;
-  try {
-    const accessData = await checkCarOwnerQuery(userId, carId);
-    if (!accessData){
-      return res.status(403).json(formErrorResponse("Unauthorized")); 
-    }
-    next();
-  } catch (err){
-    return res.status(403).json(formErrorResponse("Unauthorized", err.message));
-  }
-};
+import { getCarByIdQuery } from "../queries/carQueries.js";
 
 export const validateCarExists = async (req, res, next) => {
   const carId = req.params.carId || req.body.carId;
