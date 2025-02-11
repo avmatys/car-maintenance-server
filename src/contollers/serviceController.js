@@ -1,5 +1,5 @@
 import { formErrorResponse } from '../utils/errorUtils.js';
-import { insertServiceQuery, selectServiceByCarId, deleteServiceById } from '../queries/serviceQueries.js';
+import { insertServiceQuery, selectServiceByCarId, deleteServiceByIdQuery } from '../queries/serviceQueries.js';
 
 export const createService = async (req, res) => {
     const { carId, serviceDate, mileage, location, works = [], spareParts = [] } = req.body;
@@ -10,10 +10,6 @@ export const createService = async (req, res) => {
         return res.status(500).json(formErrorResponse('Error service creation', err.message));
     }
 };
-
-export const getServiceById = async (req, res) => {
-    res.status(501);
-};  
 
 export const getCarSerices = async (req, res) => {
     const carId = req.params.carId;
@@ -34,7 +30,7 @@ export const getCarSerices = async (req, res) => {
 export const deleteService = async (req, res) => {
     const serviceId = req.params.serviceId;
     try {
-        await deleteServiceById(serviceId);
+        await deleteServiceByIdQuery(serviceId);
         res.status(200).json({message: "Service was deleted"});
     } catch(err) {
         return res.status(500).json(formErrorResponse('Error during service deletion', err.message));

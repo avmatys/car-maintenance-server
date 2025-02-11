@@ -75,12 +75,12 @@ export const selectServiceByCarId = async (carId) => {
     return result.rows;
 };
 
-export const getServiceById = async (serviceId, columns=['*']) => {
+export const getServiceByIdQuery = async (serviceId, columns=['*']) => {
     const selectQuery = `SELECT ${columns.join(',')} FROM services WHERE id = $1 LIMIT 1`;
     const result = await query(selectQuery, [serviceId]);
     return result.rows[0];
 };
 
-export const deleteServiceById = async (serviceId) => {
+export const deleteServiceByIdQuery = async (serviceId) => {
     await query(`DELETE FROM services WHERE id = $1`, [serviceId]);
 };

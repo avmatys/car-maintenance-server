@@ -6,7 +6,7 @@ import { validateCarCreation, validateCarId, validateCarExists} from '../middlew
 const router = Router();
 
 router.post('/', verifyToken, validateCarCreation, createCar);
-router.delete('/:carId', verifyToken, validateCarId, validateUserIsCarOwner, validateCarExists, deleteCar);
+router.delete('/:carId', verifyToken, validateCarId, validateUserIsCarOwner, deleteCar);
 router.patch('/:carId', verifyToken, validateCarId, validateUserIsCarOwner, validateCarExists, updateCar)
 router.get('/', verifyToken, getUserCars)
 
