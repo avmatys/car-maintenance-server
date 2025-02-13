@@ -1,5 +1,5 @@
 import { check, body } from "express-validator";
-import { checkValidationErrors } from "../utils/errorUtils.js";
+import { checkValidationErrors, formErrorResponse } from "../utils/errorUtils.js";
 import { getServiceByIdQuery } from "../queries/serviceQueries.js";
 
 export const validateServiceCreation = [
@@ -67,7 +67,7 @@ export const validateServiceId = [
 ];
 
 export const addCarIdFromService = async (req, res, next) => {
-  const serviceId = req.params.serviceId;
+  const serviceId = req.params.serviceId || req.body.serviceId;
   try{
     const service = await getServiceByIdQuery(serviceId, ['car_id']);
     if (!service) {
