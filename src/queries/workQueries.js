@@ -1,4 +1,4 @@
-import { query, beginTransaction, commitTransaction, rollbackTransaction } from "../config/db.js";
+import { query } from "../config/db.js";
 
 export const insertWorkQuery = async (serviceId, description, cost) => {
     const result = await query (

@@ -3,7 +3,6 @@ import { insertWorkQuery, deleteWorkByIdQuery} from '../queries/workQueries.js';
 
 export const createWork = async (req, res) => {
     const { serviceId, description, cost } = req.body;
-    console.log(serviceId)
     try {
         const work = await insertWorkQuery(serviceId, description, cost);
         return res.status(201).json(work);
