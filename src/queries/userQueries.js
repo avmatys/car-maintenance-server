@@ -14,7 +14,7 @@ export const getUserByIdQuery = async (id) => {
   return result.rows[0];
 };
 
-export const createUserQuery = async () => {
+export const insertUserQuery = async () => {
   const result = await query(
     "INSERT INTO users DEFAULT VALUES RETURNING id, created_at"
   );
@@ -22,11 +22,11 @@ export const createUserQuery = async () => {
 };
 
 // Web profile
-export const createWebProfileQuery = async (email, hashedPassword) => {
+export const insertWebProfileQuery = async (email, hashedPassword) => {
   let client;
   try {
     client = await beginTransaction();
-    const user = await createUserQuery();
+    const user = await insertUserQuery();
     const result = await query(
       "INSERT INTO web_profiles (user_id, email, password) VALUES ($1, $2, $3) RETURNING id, user_id, email, created_at",
       [user.id, email, hashedPassword]
@@ -49,11 +49,11 @@ export const getWebProfileByEmailQuery = async (email) => {
 };
 
 // Telegram profile
-export const createTgProfileQuery = async (telegramId) => {
+export const insertTgProfileQuery = async (telegramId) => {
   let client;
   try {
     client = await beginTransaction();
-    const user = await createUserQuery();
+    const user = await insertUserQuery();
     const result = await query(
       "INSERT INTO telegram_profiles (user_id, telegram_id) VALUES ($1, $2) RETURNING id, user_id, telegram_id, created_at",
       [user.id, telegramId]

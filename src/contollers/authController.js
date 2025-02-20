@@ -1,8 +1,8 @@
 import {
   getWebProfileByEmailQuery,
-  createWebProfileQuery,
+  insertWebProfileQuery,
   getTgProfileByTelegramIdQuery,
-  createTgProfileQuery,
+  insertTgProfileQuery,
 } from "../queries/userQueries.js";
 import {
   hashPassword,
@@ -23,7 +23,7 @@ export const registerWebUser = async (req, res) => {
         .json(formErrorResponse("User with the same email is already exists"));
     }
     const hashedPassword = await hashPassword(password);
-    const userWebProfile = await createWebProfileQuery(email, hashedPassword);
+    const userWebProfile = await insertWebProfileQuery(email, hashedPassword);
     const { password: _, ...userWithoutPassword } = userWebProfile;
     res.status(201).json(userWithoutPassword);
   } catch (err) {
@@ -70,7 +70,7 @@ export const registerTgUser = async (req, res) => {
           formErrorResponse("User with the same telegram id is already exists")
         );
     }
-    const userTgProfile = await createTgProfileQuery(telegramId);
+    const userTgProfile = await insertTgProfileQuery(telegramId);
     res.status(201).json(userTgProfile);
   } catch (err) {
     return res

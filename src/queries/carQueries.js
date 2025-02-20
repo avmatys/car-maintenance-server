@@ -1,8 +1,7 @@
 import { query, beginTransaction, commitTransaction, rollbackTransaction } from "../config/db.js";
 import config from "../config/config.js";
 
-// Cars
-export const createCarQuery = async (ownerId, vin, modelId, year, miliage) => {
+export const insertCarQuery = async (ownerId, vin, modelId, year, miliage) => {
   let client;
   try {
     client = await beginTransaction();
@@ -54,21 +53,21 @@ export const getCarByIdQuery = async (carId) => {
   return result.rows[0];
 }
 
-export const getCarsByOwnerQuery = async (ownerId) => {
-  const result = await query(
-    `SELECT c.id, c.model_id, c.year, c.miliage, c.vin
+export const selectCarsByOwnerQuery = async ({ownerId}, params) => {
+  const sqlQuery = `
+    SELECT c.id, c.model_id, c.year, c.miliage, c.vin
     FROM cars c
     JOIN car_access ca ON c.id = ca.car_id
-    WHERE ca.user_id = $1`,
-    [ownerId]
-  );
+    WHERE ca.user_id = $1
+    ORDER BY c.${params.orderby} ${params.direction}
+    LIMIT ${params.limit} OFFSET ${params.offset} 
+  `;
+  const result = await query(sqlQuery,[ownerId]);
   return result.rows;
 };
 
 export const updateCarByIdQuery = async (carId, updateFields) => {
-  const updateClause = Object.entries(updateFields)
-    .map(([field, _], index) => `${field} = $${index + 1}`)
-    .join(", ");
+  const updateClause = Object.entries(updateFields).map(([field, _], index) => `${field} = $${index + 1}`).join(", ");
   const updateQuery = `
     UPDATE cars
     SET ${updateClause}

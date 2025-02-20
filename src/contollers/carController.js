@@ -1,12 +1,13 @@
-import { createCarQuery, deleteCarByIdQuery, getCarByOwnerAndVINQuery, getCarsByOwnerQuery, updateCarByIdQuery } from '../queries/carQueries.js';
-import { getModelByIdQuery } from '../queries/modelQueries.js';
+import { insertCarQuery, deleteCarByIdQuery, getCarByOwnerAndVINQuery, selectCarsByOwnerQuery, updateCarByIdQuery } from '../queries/carQueries.js';
+import { selectModelByIdQuery } from '../queries/modelQueries.js';
+import { buildSelectParams } from '../utils/commonUtils.js';
 import { formErrorResponse } from '../utils/errorUtils.js';
 
 export const createCar = async (req, res) => {
   const { vin, modelId, year, miliage } = req.body;
   const userId = req.user.userId;
-  try { 
-    const model = await getModelByIdQuery(modelId);
+  try {
+    const model = await selectModelByIdQuery(modelId);
     if (!model) {
       return res.status(400).json(formErrorResponse('Model doesn\' exist'));
     }
@@ -17,10 +18,10 @@ export const createCar = async (req, res) => {
     if (duplicateCar) {
       return res.status(400).json(formErrorResponse('User has a car with the same VIN'));
     }
-    const car = await createCarQuery(userId, vin, modelId, year, miliage);
+    const car = await insertCarQuery(userId, vin, modelId, year, miliage);
     res.status(201).json({ car });
   } catch (err) {
-      return res.status(500).json(formErrorResponse ('Error car creation', err.message));
+    return res.status(500).json(formErrorResponse('Error car creation', err.message));
   }
 };
 
@@ -29,7 +30,7 @@ export const updateCar = async (req, res) => {
   const car = req.car;
   if (modelId != car.model_id || year != car.year) {
     const curModelId = modelId ? modelId : car.model_id;
-    const model = await getModelByIdQuery(curModelId);
+    const model = await selectModelByIdQuery(curModelId);
     if (!model) {
       return res.status(400).json(formErrorResponse('Model doesn\' exist'));
     }
@@ -53,7 +54,7 @@ export const updateCar = async (req, res) => {
     const updatedCar = await updateCarByIdQuery(car.id, updateFields);
     return res.status(200).json({ updatedCar });
   } catch (err) {
-    return res.status(500).json(formErrorResponse ('Error car update', err.message));
+    return res.status(500).json(formErrorResponse('Error car update', err.message));
   }
 };
 
@@ -61,18 +62,20 @@ export const deleteCar = async (req, res) => {
   const carId = req.params.carId;
   try {
     await deleteCarByIdQuery(carId);
-    res.status(200).json({message: "Car was deleted"});
-  } catch(err){
-    return res.status(500).json(formErrorResponse ('Error car deletion', err.message));
+    res.status(200).json({ message: "Car was deleted" });
+  } catch (err) {
+    return res.status(500).json(formErrorResponse('Error car deletion', err.message));
   }
 };
 
 export const getUserCars = async (req, res) => {
   const userId = req.user.userId;
+  const { limit, offset } = req.query;
+  const params = buildSelectParams({ offset, limit })
   try {
-    const result = await getCarsByOwnerQuery(userId);
-    res.status(200).json({ result });
-  } catch(err){
-    return res.status(500).json(formErrorResponse ('Error reading cars', err.message));
+    const result = await selectCarsByOwnerQuery(userId, params);
+    res.status(200).json({ ...params, data: result });
+  } catch (err) {
+    return res.status(500).json(formErrorResponse('Error reading cars', err.message));
   }
 };

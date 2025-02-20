@@ -15,7 +15,11 @@ const config = {
     database: process.env.PG_DATABASE,
     user: process.env.PG_USER,
     password: process.env.PG_PASSWORD,
-    schema : process.env.PG_SCHEMA
+    schema : process.env.PG_SCHEMA,
+  },
+  query: {
+    defualtLimit: process.env.DEF_LIMIT || 50,
+    maxLimit: process.env.MAX_LIMIT || 10000
   },
   telegram: {
     token: process.env.TELEGRAM_API_TOKEN

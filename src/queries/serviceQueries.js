@@ -51,7 +51,7 @@ export const insertServiceQuery = async (carId, serviceDate, mileage, location, 
     }
 };
 
-export const selectServiceByCarId = async (carId) => {
+export const selectServiceByCarId = async ({carId}, params) => {
     const selectQuery = `
         SELECT 
         sr.*,
@@ -69,7 +69,8 @@ export const selectServiceByCarId = async (carId) => {
         ) AS parts
         FROM services sr
         WHERE sr.car_id = $1
-        ORDER BY sr.service_date DESC;
+        ORDER BY sr.${params.orderby} ${params.direction}
+        OFFSET ${params.offset} LIMIT ${params.limit};
     `;
     const result = await query(selectQuery, [carId]);
     return result.rows;
