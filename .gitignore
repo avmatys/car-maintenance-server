@@ -24,5 +24,4 @@ dist/
 coverage/
 
 # User defined
-docs/
-requests/
+docs
