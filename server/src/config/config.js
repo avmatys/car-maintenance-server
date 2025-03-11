@@ -6,16 +6,16 @@ console.log(`Initializing env ${process.env}`);
 
 const config = {
   app: {
-    port: process.env.PORT || 3000,
+    port: process.env.SERVER_PORT || 3000,
     env: process.env.NODE_ENV || 'development'
   },
   db: {
-    host: process.env.PG_HOST,
-    port: process.env.PG_PORT,
-    database: process.env.PG_DATABASE,
-    user: process.env.PG_USER,
-    password: process.env.PG_PASSWORD,
-    schema : process.env.PG_SCHEMA,
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    database: process.env.POSTGRES_DB,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    schema : process.env.POSTGRES_SCHEMA,
   },
   query: {
     defualtLimit: process.env.DEF_LIMIT || 50,
