@@ -41,10 +41,7 @@ export const insertWebProfileQuery = async (email, hashedPassword) => {
 };
 
 export const getWebProfileByEmailQuery = async (email) => {
-  const result = await query(
-    "SELECT id, email, password, user_id, created_at FROM web_profiles WHERE email = $1 LIMIT 1",
-    [email]
-  );
+  const result = await query("SELECT id, email, password, user_id, created_at FROM web_profiles WHERE email = $1 LIMIT 1", [email]);
   return result.rows[0];
 };
 
@@ -68,9 +65,6 @@ export const insertTgProfileQuery = async (telegramId) => {
 };
 
 export const getTgProfileByTelegramIdQuery = async (telegramId) => {
-  const result = await query(
-    "SELECT id, telegram_id, user_id, created_at FROM telegram_profiles WHERE telegram_id = $1 LIMIT 1",
-    [telegramId]
-  );
+  const result = await query("SELECT id, telegram_id, user_id, created_at FROM telegram_profiles WHERE telegram_id = $1 LIMIT 1",[telegramId]);
   return result.rows[0];
 };

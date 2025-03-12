@@ -62,7 +62,6 @@ export const validateWebRegister = [
   validatePassword,
   (req, res, next) => {
     checkValidationErrors(req, res, next, 400, 'Web user registration data is not correct');
-    next();
   }
 ];
 
