@@ -1,0 +1,9 @@
+node.localhost {
+    reverse_proxy nodejs:3000
+    tls internal
+}
+
+pgadmin.localhost {
+    reverse_proxy pgadmin:80
+    tls internal
+}
